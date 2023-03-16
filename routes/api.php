@@ -19,4 +19,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+// rotta per la vista dei progetti
 Route::get('/projects', [ProjectController::class, 'index']);
+
+// rotta per la vista del singolo progetto (show)
+Route::get('/projects/{id}', [ProjectController::class, 'show']);

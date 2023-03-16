@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Project;
+use finfo;
 use Illuminate\Http\Request;
 
 class ProjectController extends Controller
@@ -37,7 +38,8 @@ class ProjectController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $project = Project::with('type', 'technologies')->find($id);
+        return response()->json($project);
     }
 
     /**
