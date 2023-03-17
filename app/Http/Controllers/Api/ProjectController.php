@@ -17,9 +17,7 @@ class ProjectController extends Controller
         $projects = Project::with('type', 'technologies')->get();
 
         foreach ($projects as $project) {
-            if ($project->image) {
-                $project->image = url('storage/' . $project->image);
-            }
+            if ($project->image) $project->image = url('storage/' . $project->image);
         }
 
         return response()->json($projects);
@@ -39,6 +37,9 @@ class ProjectController extends Controller
     public function show(string $id)
     {
         $project = Project::with('type', 'technologies')->find($id);
+
+        if ($project->image) $project->image = url('storage/' . $project->image);
+
         return response()->json($project);
     }
 
