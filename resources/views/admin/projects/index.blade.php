@@ -17,6 +17,7 @@
                     <div class="card-body d-flex flex-column">
                         <h5 class="card-title">{{ $project->title }}</h5>
                         <p class="card-text"> {{$project->description }}</p>
+                        <small class="card-text mb-3">Ultima modifica: {{$project->getDate('updated_at') }}</small>
                         <div class="mt-auto">
                             <a href="{{route('admin.projects.show', $project->id)}}" class="btn btn-primary">Dettagli</a>
                             <form action="{{route('admin.projects.destroy', $project->id)}}" method="POST" class="d-inline delete-form">
