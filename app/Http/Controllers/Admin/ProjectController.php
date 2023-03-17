@@ -3,11 +3,14 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Mail\ProjectPublicationMail;
 use App\Models\Project;
 use App\Models\Technology;
 use App\Models\Type;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Exists;
@@ -31,6 +34,7 @@ class ProjectController extends Controller
         $project = new Project();
         $types = Type::all();
         $technologies = Technology::select('id', 'label')->orderBy('id')->get();
+
         return view('admin.projects.create', compact('project', 'types', 'technologies'));
     }
 
@@ -70,6 +74,10 @@ class ProjectController extends Controller
         $project->save();
 
         if (Arr::exists($data, 'technologies')) $project->technologies()->attach($data['technologies']);
+
+        $email = new ProjectPublicationMail($project);
+        $user_email = Auth::user()->email;
+        Mail::to($user_email)->send($email);
 
         return to_route('admin.projects.show', $project->id)->with('type', 'success')->with('message', 'Elemento creato con successo');
     }
